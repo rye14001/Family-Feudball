@@ -149,10 +149,12 @@
   #matchup-table,#records-table,#awards-table,#sim-table{min-width:0}
   #matchup-table thead,#records-table thead,#awards-table thead,#sim-table thead{display:none}
   #matchup-table tbody,#records-table tbody,#awards-table tbody,#sim-table tbody{display:grid;gap:7px;padding:7px}
-  #matchup-table tr{display:grid;grid-template-columns:31px minmax(0,1fr) 47px 15px minmax(0,1fr) 47px;align-items:center;border:1px solid var(--border-soft);border-radius:7px;background:var(--panel-2);overflow:hidden}
+  #matchup-table tr{display:grid;grid-template-columns:34px minmax(0,1fr) 58px 15px minmax(0,1fr) 58px;align-items:center;border:1px solid var(--border-soft);border-radius:7px;background:var(--panel-2)}
   #matchup-table td{min-width:0;padding:8px 3px;border:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   #matchup-table td:first-child{text-align:center;color:var(--teal);font-weight:800}
-  #matchup-table td:nth-child(3),#matchup-table td:nth-child(6){text-align:right;font-family:var(--font-mono);font-size:10px}
+  #matchup-table td:nth-child(3),#matchup-table td:nth-child(6){overflow:visible;padding:6px 3px;text-align:center;font-family:var(--font-mono);font-size:10px}
+  #matchup-table td:nth-child(3) .pill,#matchup-table td:nth-child(6) .pill{display:flex;width:100%;min-width:0;justify-content:center;padding:4px 3px;line-height:1;white-space:nowrap}
+  #matchup-table td:first-child .pill{display:flex;width:100%;min-width:0;justify-content:center;padding:3px 1px;font-size:8px;white-space:nowrap}
   #matchup-table td:nth-child(4){padding:0;text-align:center;color:var(--text-faint);font-size:8px}
   #matchup-table td:nth-child(7){display:none}
   #records-table tr,#awards-table tr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;border:1px solid var(--border-soft);border-radius:7px;background:var(--panel-2);overflow:hidden}
@@ -161,13 +163,20 @@
   #records-table td:nth-child(1)::before{content:"Manager"}#records-table td:nth-child(2)::before{content:"Seasons"}#records-table td:nth-child(3)::before{content:"Record"}#records-table td:nth-child(4)::before{content:"Win %"}#records-table td:nth-child(5)::before{content:"PPG"}#records-table td:nth-child(6)::before{content:"PA/G"}
   #awards-table td:nth-child(1)::before{content:"Award"}#awards-table td:nth-child(2)::before{content:"Winner"}#awards-table td:nth-child(3)::before{content:"What It Means"}#awards-table td:nth-child(4)::before{content:"Receipt"}
   #awards-table td:nth-child(3),#awards-table td:nth-child(4){grid-column:1/-1}
-  #sim-table tr{display:grid;grid-template-columns:32px minmax(0,1fr) 49px 49px;align-items:center;border:1px solid var(--border-soft);border-radius:7px;background:var(--panel-2);overflow:hidden}
-  #sim-table td{min-width:0;padding:7px 4px;border:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #sim-table tr{display:grid;grid-template-columns:42px minmax(0,1fr) 68px 84px;align-items:stretch;border:1px solid var(--border-soft);border-radius:7px;background:var(--panel-2)}
+  #sim-table td{min-width:0;padding:8px 5px;border:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   #sim-table td:nth-child(1){grid-column:1;grid-row:1/3;align-self:stretch;display:grid;place-items:center;color:var(--teal);font-weight:800;background:rgba(255,199,44,.06)}
   #sim-table td:nth-child(2){grid-column:2;grid-row:1}#sim-table td:nth-child(3){grid-column:3;grid-row:1}#sim-table td:nth-child(4){grid-column:4;grid-row:1}
   #sim-table td:nth-child(6){grid-column:2;grid-row:2}#sim-table td:nth-child(7){grid-column:3;grid-row:2}#sim-table td:nth-child(8){grid-column:4;grid-row:2}
-  #sim-table td:nth-child(3),#sim-table td:nth-child(4),#sim-table td:nth-child(7),#sim-table td:nth-child(8){font-family:var(--font-mono);font-size:9px;text-align:right}
-  #sim-table td:nth-child(3)::before,#sim-table td:nth-child(7)::before{content:"A ";color:var(--text-faint);font-size:7px}#sim-table td:nth-child(4)::before,#sim-table td:nth-child(8)::before{content:"R ";color:var(--text-faint);font-size:7px}
+  #sim-table td:nth-child(2),#sim-table td:nth-child(6){display:flex;align-items:center;font-size:11.5px}
+  #sim-table td:nth-child(3),#sim-table td:nth-child(4),#sim-table td:nth-child(7),#sim-table td:nth-child(8){display:flex;min-width:0;flex-direction:column;align-items:stretch;justify-content:center;overflow:visible;font-family:var(--font-mono);font-size:10.5px;text-align:center}
+  #sim-table td:nth-child(3)::before,#sim-table td:nth-child(4)::before{display:block;margin-bottom:3px;color:var(--text-faint);font:800 7px var(--font-display);letter-spacing:.45px;text-transform:uppercase}
+  #sim-table td:nth-child(3)::before{content:"Actual"}#sim-table td:nth-child(4)::before{content:"Rescored"}
+  #sim-table td:nth-child(4) .pill,#sim-table td:nth-child(8) .pill{display:flex;width:100%;min-width:0;justify-content:center;padding:5px 3px;border-radius:6px;font-size:11px;line-height:1;white-space:nowrap}
+  #sim-table td:nth-child(4) .pill.win,#sim-table td:nth-child(8) .pill.win{background:rgba(74,217,145,.28);box-shadow:inset 0 0 0 1px rgba(74,217,145,.48)}
+  #sim-table td:nth-child(4) .pill.loss,#sim-table td:nth-child(8) .pill.loss{background:rgba(255,107,122,.28);box-shadow:inset 0 0 0 1px rgba(255,107,122,.48)}
+  #sim-table td:nth-child(4) .pill.neutral,#sim-table td:nth-child(8) .pill.neutral{background:var(--panel-3);box-shadow:inset 0 0 0 1px var(--border)}
+  #sim-table td:first-child .pill{display:flex;width:100%;min-width:0;justify-content:center;padding:4px 1px;font-size:8px;white-space:nowrap}
   #sim-table td:nth-child(5),#sim-table td:nth-child(9){display:none}
   .presetrow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
   .presetbtn{width:100%;padding:9px 7px;font-size:9.5px}
@@ -188,11 +197,21 @@
   .lottery-visual{--globe-size:min(320px,calc(100% - 8px));height:545px;border-radius:22px}
   .lottery-hopper{top:38px;border-width:6px}
   .gumball-neck{top:342px}
-  .lottery-runway{left:4px;right:4px}
+  .lottery-runway{left:4px;right:4px;min-height:126px;padding:39px 4px 9px}
+  .lottery-runway::before{top:8px;height:22px;padding:0 4px;display:flex;align-items:center;justify-content:center;font-size:7px;line-height:1.1;letter-spacing:.55px;white-space:nowrap}
+  .draftorder{grid-template-columns:repeat(var(--lottery-count,8),minmax(0,1fr));gap:1px;overflow:visible}
+  .draftorder li{gap:2px;font-size:7px}
+  .draftorder li .num{font-size:8px;line-height:1}
+  .draftorder li .pick-ball{width:26px;height:26px;font-size:7px}
+  .draftorder li .pick-name{font-size:7px}
 }
 @media(max-width:370px){
   .banner{width:min(108px,42vw)}
-  #matchup-table tr{grid-template-columns:28px minmax(0,1fr) 43px 13px minmax(0,1fr) 43px}
+  #matchup-table tr{grid-template-columns:31px minmax(0,1fr) 52px 13px minmax(0,1fr) 52px}
+  #sim-table tr{grid-template-columns:38px minmax(0,1fr) 62px 76px}
+  #sim-table td{padding-left:3px;padding-right:3px}
+  #sim-table td:nth-child(2),#sim-table td:nth-child(6){font-size:10.5px}
+  #sim-table td:nth-child(4) .pill,#sim-table td:nth-child(8) .pill{font-size:10px}
   .lottery-visual{--globe-size:min(292px,calc(100% - 6px));height:520px}
   .gumball-neck{top:314px}
 }
