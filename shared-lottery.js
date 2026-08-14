@@ -20,6 +20,14 @@
     if (element) element.textContent = message || '';
   }
 
+  function requestPassphrase() {
+    try { const cached = sessionStorage.getItem('familyFeudballLotteryAdmin'); if (cached) return cached; } catch (_) {}
+    const value = window.prompt('Enter the lottery admin passphrase. It is needed only to lock, reset, or refresh this shared drawing.');
+    if (!value) return null;
+    try { sessionStorage.setItem('familyFeudballLotteryAdmin', value); } catch (_) {}
+    return value;
+  }
+
   async function api(path, options = {}) {
     const response = await fetch(API_BASE + path, { cache: 'no-store', ...options });
     const body = await response.json().catch(() => ({}));
@@ -88,12 +96,10 @@
     lotteryDateEditing = false;
     lotteryPhase = next.phase === 'complete' ? 'complete' : (next.phase === 'drawing' ? 'running' : 'waiting');
     if (rosterChanged || resultsChanged) {
-      if (rosterChanged) {
-        ballChamber.innerHTML = '';
-        lotteryBalls = [];
-      }
+      ballChamber.innerHTML = '';
+      lotteryBalls = [];
       renderSavedLotteryResults();
-      if (lotteryPanelActive && (rosterChanged || !lotteryBalls.length) && lotteryNames.length) buildLotteryBalls();
+      if (lotteryPanelActive && lotteryNames.length) buildLotteryBalls();
       refreshLotteryScheduleUI();
     }
     if (next.active) playActiveBall(next.active);
@@ -127,7 +133,9 @@
   }
 
   async function admin(path, body) {
-    return api(path, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body || {}) });
+    const passphrase = requestPassphrase();
+    if (!passphrase) return null;
+    return api(path, { method: 'POST', headers: { 'content-type': 'application/json', 'x-lottery-admin': passphrase }, body: JSON.stringify(body || {}) });
   }
 
   async function refreshRoster() {
