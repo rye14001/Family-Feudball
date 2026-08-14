@@ -20,13 +20,9 @@
     if (element) element.textContent = message || '';
   }
 
-  function requestPassphrase(forcePrompt = false) {
-    if (!forcePrompt) {
-      try { const cached = sessionStorage.getItem('familyFeudballLotteryAdmin'); if (cached) return cached; } catch (_) {}
-    }
+  function requestPassphrase() {
     const value = window.prompt('Enter the lottery admin passphrase. It is needed only to lock, reset, or refresh this shared drawing.');
     if (!value) return null;
-    try { sessionStorage.setItem('familyFeudballLotteryAdmin', value); } catch (_) {}
     return value;
   }
 
@@ -146,8 +142,7 @@
       return await api(path, options(passphrase));
     } catch (error) {
       if (error.status !== 401) throw error;
-      try { sessionStorage.removeItem('familyFeudballLotteryAdmin'); } catch (_) {}
-      const retry = requestPassphrase(true);
+      const retry = requestPassphrase();
       if (!retry) throw error;
       return api(path, options(retry));
     }
