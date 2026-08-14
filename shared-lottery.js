@@ -20,8 +20,10 @@
     if (element) element.textContent = message || '';
   }
 
-  function requestPassphrase() {
-    try { const cached = sessionStorage.getItem('familyFeudballLotteryAdmin'); if (cached) return cached; } catch (_) {}
+  function requestPassphrase(forcePrompt = false) {
+    if (!forcePrompt) {
+      try { const cached = sessionStorage.getItem('familyFeudballLotteryAdmin'); if (cached) return cached; } catch (_) {}
+    }
     const value = window.prompt('Enter the lottery admin passphrase. It is needed only to lock, reset, or refresh this shared drawing.');
     if (!value) return null;
     try { sessionStorage.setItem('familyFeudballLotteryAdmin', value); } catch (_) {}
@@ -31,7 +33,11 @@
   async function api(path, options = {}) {
     const response = await fetch(API_BASE + path, { cache: 'no-store', ...options });
     const body = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(body.error || 'The shared lottery service could not complete that request.');
+    if (!response.ok) {
+      const error = new Error(body.error || 'The shared lottery service could not complete that request.');
+      error.status = response.status;
+      throw error;
+    }
     return body;
   }
 
@@ -135,7 +141,16 @@
   async function admin(path, body) {
     const passphrase = requestPassphrase();
     if (!passphrase) return null;
-    return api(path, { method: 'POST', headers: { 'content-type': 'application/json', 'x-lottery-admin': passphrase }, body: JSON.stringify(body || {}) });
+    const options = value => ({ method: 'POST', headers: { 'content-type': 'application/json', 'x-lottery-admin': value }, body: JSON.stringify(body || {}) });
+    try {
+      return await api(path, options(passphrase));
+    } catch (error) {
+      if (error.status !== 401) throw error;
+      try { sessionStorage.removeItem('familyFeudballLotteryAdmin'); } catch (_) {}
+      const retry = requestPassphrase(true);
+      if (!retry) throw error;
+      return api(path, options(retry));
+    }
   }
 
   async function refreshRoster() {
