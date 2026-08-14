@@ -1,0 +1,23 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "family-feudball-lottery",
+  "main": "src/index.js",
+  "compatibility_date": "2026-08-14",
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "LOTTERY_STATE",
+        "class_name": "LotteryState"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["LotteryState"]
+    }
+  ],
+  "vars": {
+    "ALLOWED_ORIGIN": "https://rye14001.github.io"
+  }
+}
