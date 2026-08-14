@@ -110,6 +110,11 @@ export class LotteryState {
     return state;
   }
 
+  authorized(request) {
+    const expected = this.env.LOTTERY_ADMIN_PASSPHRASE;
+    return Boolean(expected) && request.headers.get('x-lottery-admin') === expected;
+  }
+
   async requestBody(request) {
     try {
       return await request.json();
@@ -130,6 +135,8 @@ export class LotteryState {
     if (method !== 'POST' || !['/v1/lottery/lock', '/v1/lottery/reset', '/v1/lottery/roster'].includes(path)) {
       return json({ error: 'Not found.' }, 404);
     }
+    if (!this.env.LOTTERY_ADMIN_PASSPHRASE) return json({ error: 'Lottery protection is not configured yet.' }, 503);
+    if (!this.authorized(request)) return json({ error: 'Enter the lottery admin passphrase to make that change.' }, 401);
     const state = await this.readState();
     const body = await this.requestBody(request);
 
