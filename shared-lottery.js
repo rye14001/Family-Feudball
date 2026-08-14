@@ -21,16 +21,11 @@
   }
 
   function requestPassphrase() {
-    const input = document.getElementById('lottery-admin-passphrase');
-    const typed = input && input.value.trim();
-    if (typed) {
-      try { sessionStorage.setItem('familyFeudballLotteryAdmin', typed); } catch (_) {}
-      return typed;
-    }
     try { const cached = sessionStorage.getItem('familyFeudballLotteryAdmin'); if (cached) return cached; } catch (_) {}
-    setError('Enter the admin passphrase above before making a lottery change.');
-    if (input) input.focus();
-    return null;
+    const value = window.prompt('Enter the lottery admin passphrase. It is needed only to lock, reset, or refresh this shared drawing.');
+    if (!value) return null;
+    try { sessionStorage.setItem('familyFeudballLotteryAdmin', value); } catch (_) {}
+    return value;
   }
 
   async function api(path, options = {}) {
@@ -212,6 +207,14 @@
     }
     refreshRoster();
   }, true);
+
+  // The legacy reset listener is device-only. Replace that button so every
+  // reset flows through the protected shared-state listener above.
+  const legacyResetButton = document.getElementById('lottery-reset');
+  if (legacyResetButton) {
+    const protectedResetButton = legacyResetButton.cloneNode(true);
+    legacyResetButton.replaceWith(protectedResetButton);
+  }
 
   window.setLotteryActive = active => {
     lotterySchedule = null;
