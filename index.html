@@ -517,6 +517,7 @@ function renderDraftTeamAnalysis(season){
         .replace("['Board Appetite',topPos,`${topPosCount} selections`]", "['Opening-Round Rush',`${roundOneCount} ${roundOnePos}${roundOneCount===1?'':'s'}`,`of ${firstRoundPicks.length} Round 1 picks`]");
       source=source.replace('function renderStandingsDraft(season){',draftAnalysisRuntime+'\nfunction renderStandingsDraft(season){\n  renderDraftTeamAnalysis(season);');
       source=source.replace('</style>',mobileDetailStyles+'</style>');
+      source=source.replace("reportSurveyBoardState();\n</script>", "reportSurveyBoardState();\n</script><script src=\"shared-lottery.js\"></script>");
       // Keep the lottery schedule and its live status in one card, and provide
       // one explicit reset for the saved date, draw order, and manager balls.
       const refreshRosterButton='<button type="button" class="secondary" id="lottery-refresh-roster">Refresh Managers from Sleeper</button>';
