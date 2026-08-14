@@ -105,6 +105,7 @@
       if (lotteryPanelActive && lotteryNames.length) buildLotteryBalls();
       refreshLotteryScheduleUI();
     }
+    refreshLotteryScheduleUI();
     if (next.active) playActiveBall(next.active);
     showStatus();
   }
