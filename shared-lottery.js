@@ -135,17 +135,17 @@
   }
 
   async function admin(path, body) {
-    const passphrase = requestPassphrase();
-    if (!passphrase) return null;
     const options = value => ({ method: 'POST', headers: { 'content-type': 'application/json', 'x-lottery-admin': value }, body: JSON.stringify(body || {}) });
-    try {
-      return await api(path, options(passphrase));
-    } catch (error) {
-      if (error.status !== 401) throw error;
-      const retry = requestPassphrase();
-      if (!retry) throw error;
-      return api(path, options(retry));
+    let passphrase = requestPassphrase();
+    while (passphrase) {
+      try {
+        return await api(path, options(passphrase));
+      } catch (error) {
+        if (error.status !== 401) throw error;
+        passphrase = requestPassphrase();
+      }
     }
+    return null;
   }
 
   async function refreshRoster() {
