@@ -84,6 +84,7 @@
 
   function applyState(next) {
     state = next;
+    window.parent.postMessage({ type: 'feudboard-lottery-state', active: Boolean(next.scheduleAt && next.phase !== 'complete') }, '*');
     const nextRosterKey = next.roster.join('|');
     const nextResultsKey = next.order.join('|');
     const rosterChanged = nextRosterKey !== rosterKey;
